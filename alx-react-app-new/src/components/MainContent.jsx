@@ -8,7 +8,7 @@ function MainContent() {
       fontFamily: 'Arial, sans-serif'
     }}>
       <h2 style={{ color: '#333' }}>Welcome to My City List</h2>
-      <p>Here you'll find profiles of people from different cities around the world.</p>
+      <p>I love to visit New York, Paris, and Tokyo.</p>
     </main>
   );
 }
