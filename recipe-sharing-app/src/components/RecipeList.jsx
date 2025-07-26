@@ -1,4 +1,4 @@
-import { useRecipeStore } from '../store/recipeStore';
+import { useRecipeStore } from './recipeStore'; // ✅ Updated path
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
