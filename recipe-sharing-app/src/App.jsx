@@ -23,8 +23,9 @@ function App() {
   );
 }
 
-// Wrapper component to extract route param and pass as prop
+// Wrapper component to extract the route param and pass as prop
 import { useParams } from 'react-router-dom';
+
 const RecipeDetailsWrapper = () => {
   const { id } = useParams();
   return <RecipeDetails recipeId={id} />;
