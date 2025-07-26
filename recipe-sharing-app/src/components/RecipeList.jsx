@@ -1,26 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useRecipeStore } from "./recipeStore";
+import React from 'react';
+import { useRecipeStore } from './recipeStore';
 
 const RecipeList = () => {
-  const recipes = useRecipeStore(state =>
-    state.searchTerm
-      ? state.recipes.filter(recipe =>
-          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-        )
-      : state.recipes
-  );
+  const recipes = useRecipeStore(state => state.recipes);
+  const favorites = useRecipeStore(state => state.favorites);
+  const addFavorite = useRecipeStore(state => state.addFavorite);
+  const removeFavorite = useRecipeStore(state => state.removeFavorite);
 
-  if (recipes.length === 0) return <p>No recipes found.</p>;
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      removeFavorite(id);
+    } else {
+      addFavorite(id);
+    }
+  };
 
   return (
-    <ul>
+    <div>
+      <h2>All Recipes</h2>
       {recipes.map(recipe => (
-        <li key={recipe.id}>
-          <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
-        </li>
+        <div key={recipe.id} style={{ border: '1px solid #ddd', padding: '1rem', marginBottom: '1rem' }}>
+          <h3>{recipe.title}</h3>
+          <p>{recipe.description}</p>
+          <button onClick={() => toggleFavorite(recipe.id)}>
+            {favorites.includes(recipe.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+          </button>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 

@@ -1,25 +1,24 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import RecipeList from "./components/RecipeList";
-import RecipeDetail from "./components/RecipeDetail";
-import SearchBar from "./components/SearchBar";
+import RecipeDetails from "./components/RecipeDetails";  // note the plural here
 import AddRecipeForm from "./components/AddRecipeForm";
+import FavoritesList from "./components/FavoritesList";
+import RecommendationsList from "./components/RecommendationsList";
 
 function App() {
   return (
     <Router>
       <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-        <SearchBar />
+        <h1>Recipe Sharing App</h1>
+
+        <AddRecipeForm />
+
+        <FavoritesList />
+        <RecommendationsList />
+
         <Routes>
-          <Route path="/" element={
-            <>
-              <AddRecipeForm />
-              <RecipeList />
-            </>
-          } />
-          <Route path="/recipe/:id" element={<RecipeDetail />} />
-          <Route path="/add" element={<AddRecipeForm />} />
+          <Route path="/" element={<RecipeList />} />
+          <Route path="/recipe/:id" element={<RecipeDetails />} />  {/* plural here */}
         </Routes>
       </div>
     </Router>

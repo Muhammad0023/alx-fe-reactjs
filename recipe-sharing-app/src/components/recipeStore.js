@@ -1,11 +1,26 @@
-import create from "zustand";
+import create from 'zustand';
 
-export const useRecipeStore = create(set => ({
-  recipes: [
-    { id: 1, title: "Spaghetti Carbonara", description: "Classic Italian pasta." },
-    { id: 2, title: "Chicken Curry", description: "Spicy and creamy." },
-    { id: 3, title: "Beef Stroganoff", description: "Rich and hearty." },
-  ],
-  searchTerm: "",
-  setSearchTerm: (term) => set({ searchTerm: term }),
+const useRecipeStore = create(set => ({
+  recipes: [],
+
+  favorites: [],
+  addFavorite: (recipeId) => set(state => ({
+    favorites: state.favorites.includes(recipeId) ? state.favorites : [...state.favorites, recipeId]
+  })),
+  removeFavorite: (recipeId) => set(state => ({
+    favorites: state.favorites.filter(id => id !== recipeId)
+  })),
+
+  recommendations: [],
+  generateRecommendations: () => set(state => {
+    // Example recommendation: random half of favorites
+    const recommended = state.recipes.filter(recipe =>
+      state.favorites.includes(recipe.id) && Math.random() > 0.5
+    );
+    return { recommendations: recommended };
+  }),
+
+  // Keep other existing states and actions, e.g. addRecipe, deleteRecipe, updateRecipe
 }));
+
+export { useRecipeStore };
