@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Search({ onSearch, loading, error, userData }) {
+const Search = ({ onSearch, loading, error, userData }) => {
   const [username, setUsername] = useState('');
 
   const handleSubmit = (e) => {
@@ -12,40 +12,32 @@ function Search({ onSearch, loading, error, userData }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ marginBottom: '1rem' }}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: '0.5rem', width: '300px' }}
+          aria-label="Search input"
         />
-        <button type="submit" style={{ padding: '0.5rem 1rem', marginLeft: '0.5rem' }}>
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
 
       {loading && <p>Loading...</p>}
 
-      {error && <p style={{ color: 'red' }}>Looks like we cant find the user</p>}
+      {error && <p>Looks like we cant find the user</p>}
 
       {userData && (
         <div>
-          <img
-            src={userData.avatar_url}
-            alt={`${userData.login} avatar`}
-            style={{ width: 100, borderRadius: '50%' }}
-          />
+          <img src={userData.avatar_url} alt={`${userData.login} avatar`} />
           <h2>{userData.name || userData.login}</h2>
-          <p>
-            <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-              Visit GitHub Profile
-            </a>
-          </p>
+          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
+            Visit GitHub Profile
+          </a>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default Search;

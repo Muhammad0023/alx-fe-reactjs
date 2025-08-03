@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Search from './components/Search';
 import { fetchUserData } from './services/githubService';
 
-function App() {
+const App = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -23,11 +23,11 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
+    <main>
       <h1>GitHub User Search</h1>
       <Search onSearch={handleSearch} loading={loading} error={error} userData={userData} />
-    </div>
+    </main>
   );
-}
+};
 
 export default App;
