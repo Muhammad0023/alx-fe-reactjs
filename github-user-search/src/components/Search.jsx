@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { fetchUserData } from '../services/githubService';
 
-function Search({ onSearch }) {
-  const [username, setUsername] = useState("");
+function Search() {
+  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,13 +13,13 @@ function Search({ onSearch }) {
 
     setLoading(true);
     setError(null);
-    setUser(null);
+    setUserData(null);
 
     try {
-      const response = await onSearch(username.trim());
-      setUser(response);
-    } catch (err) {
-      setError("Looks like we cant find the user");
+      const data = await fetchUserData(username.trim());
+      setUserData(data);
+    } catch {
+      setError('Looks like we can’t find the user');
     } finally {
       setLoading(false);
     }
@@ -26,34 +27,36 @@ function Search({ onSearch }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: '1rem' }}>
         <input
           type="text"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: "0.5rem", width: "300px" }}
+          style={{ padding: '0.5rem', width: '300px' }}
         />
-        <button type="submit" style={{ padding: "0.5rem 1rem", marginLeft: "0.5rem" }}>
+        <button type="submit" style={{ padding: '0.5rem 1rem', marginLeft: '0.5rem' }}>
           Search
         </button>
       </form>
 
       {loading && <p>Loading...</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {user && (
-        <div>
+      {userData && (
+        <div style={{ marginTop: '1rem' }}>
           <img
-            src={user.avatar_url}
-            alt={`${user.login} avatar`}
-            style={{ width: 100, borderRadius: "50%" }}
+            src={userData.avatar_url}
+            alt={`${userData.login} avatar`}
+            style={{ width: 100, borderRadius: '50%' }}
           />
-          <h2>{user.name || user.login}</h2>
-          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
-            Visit GitHub Profile
-          </a>
+          <h2>{userData.name || userData.login}</h2>
+          <p>
+            <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
+              Visit GitHub Profile
+            </a>
+          </p>
         </div>
       )}
     </div>
