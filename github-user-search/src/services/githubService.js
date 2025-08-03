@@ -1,19 +1,8 @@
-// src/services/githubService.js
+// Use axios to fetch GitHub user data by username
 import axios from 'axios';
 
-const BASE_URL = 'https://api.github.com/search/users';
-
-export async function fetchUsersAdvanced({ username = '', location = '', repos = 0 }) {
-  let query = '';
-
-  if (username) query += `${username} in:login`;
-  if (location) query += ` location:${location}`;
-  if (repos) query += ` repos:>=${repos}`;
-
-  try {
-    const response = await axios.get(`${BASE_URL}?q=${encodeURIComponent(query)}`);
-    return response.data; // returns the entire search result object
-  } catch (error) {
-    throw error;
-  }
+export async function fetchUserData(username) {
+  const url = `https://api.github.com/users/${username}`;
+  const response = await axios.get(url);
+  return response.data;
 }
