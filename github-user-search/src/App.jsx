@@ -3,61 +3,61 @@ import Search from './components/Search';
 import { fetchUsers } from './services/githubService';
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);  // List of users from search
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSearch = async (criteria) => {
+  const handleSearch = async (searchParams) => {
     setLoading(true);
     setError(null);
     setUsers([]);
 
     try {
-      const data = await fetchUsers(criteria);
+      const data = await fetchUsers(searchParams);
       if (data.items && data.items.length > 0) {
         setUsers(data.items);
       } else {
         setError('No users found matching your criteria');
       }
     } catch (err) {
-      setError('Looks like we can’t find the user');
+      setError('Error fetching users');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto p-6 font-sans">
-      <h1 className="text-4xl font-bold mb-6 text-center">GitHub Advanced User Search</h1>
+    <div className="max-w-4xl mx-auto p-6 font-sans">
+      <h1 className="text-3xl font-bold mb-6">GitHub Advanced User Search</h1>
+
       <Search onSearch={handleSearch} />
 
-      {loading && <p className="text-center mt-4">Loading...</p>}
-      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
+      {loading && <p className="mt-4 text-blue-500 font-semibold">Loading...</p>}
 
-      {users.length > 0 && (
-        <ul className="mt-6 space-y-6 max-w-3xl mx-auto">
-          {users.map(user => (
-            <li key={user.id} className="flex items-center space-x-4 p-4 border rounded shadow">
-              <img
-                src={user.avatar_url}
-                alt={`${user.login} avatar`}
-                className="w-16 h-16 rounded-full"
-              />
-              <div>
-                <h2 className="text-xl font-semibold">{user.login}</h2>
-                <a
-                  href={user.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  View Profile
-                </a>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {error && <p className="mt-4 text-red-600 font-semibold">{error}</p>}
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {users.map(user => (
+          <div key={user.id} className="p-4 border rounded shadow hover:shadow-lg transition">
+            <img
+              src={user.avatar_url}
+              alt={`${user.login} avatar`}
+              className="w-24 h-24 rounded-full mx-auto"
+            />
+            <h2 className="text-xl font-semibold mt-2 text-center">{user.login}</h2>
+            <p className="text-center mt-1">
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                View Profile
+              </a>
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

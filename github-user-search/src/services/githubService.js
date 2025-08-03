@@ -1,15 +1,14 @@
 import axios from 'axios';
 
 export async function fetchUsers({ username, location, minRepos }) {
-  let queryParts = [];
+  // Build GitHub search query dynamically
+  let query = '';
+  if (username) query += `${username} in:login`;
+  if (location) query += ` location:${location}`;
+  if (minRepos) query += ` repos:>=${minRepos}`;
 
-  if (username) queryParts.push(`${username} in:login`);
-  if (location) queryParts.push(`location:${location}`);
-  if (minRepos) queryParts.push(`repos:>=${minRepos}`);
-
-  const query = queryParts.join(' ');
   const url = `https://api.github.com/search/users?q=${encodeURIComponent(query)}`;
 
   const response = await axios.get(url);
-  return response.data;  // { items: [...] }
+  return response.data;  // This returns an object with `items` array
 }
