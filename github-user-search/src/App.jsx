@@ -5,38 +5,27 @@ import { fetchUserData } from './services/githubService';
 function App() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleSearch = async (username) => {
     setLoading(true);
-    setError(null);
+    setError(false);
     setUserData(null);
 
     try {
       const data = await fetchUserData(username);
       setUserData(data);
-    } catch {
-      setError("Looks like we can't find the user");
+    } catch (e) {
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h1>GitHub User Search</h1>
-      <Search onSearch={handleSearch} />
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={`${userData.login} avatar`} width={100} />
-          <h2>{userData.name || userData.login}</h2>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-        </div>
-      )}
+      <Search onSearch={handleSearch} loading={loading} error={error} userData={userData} />
     </div>
   );
 }
