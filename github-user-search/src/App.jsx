@@ -1,66 +1,63 @@
 import React, { useState } from 'react';
 import Search from './components/Search';
-import { fetchUserData } from './services/githubService';
+import { fetchUsers } from './services/githubService';
 
 function App() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSearch = async (searchParams) => {
+  const handleSearch = async (criteria) => {
     setLoading(true);
     setError(null);
     setUsers([]);
 
     try {
-      const results = await fetchUserData(searchParams);
-      if (results.length === 0) {
-        setError('No users found matching your criteria');
+      const data = await fetchUsers(criteria);
+      if (data.items && data.items.length > 0) {
+        setUsers(data.items);
       } else {
-        setUsers(results);
+        setError('No users found matching your criteria');
       }
     } catch (err) {
-      setError('Error fetching users');
+      setError('Looks like we can’t find the user');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">GitHub Advanced User Search</h1>
+    <div className="container mx-auto p-6 font-sans">
+      <h1 className="text-4xl font-bold mb-6 text-center">GitHub Advanced User Search</h1>
       <Search onSearch={handleSearch} />
 
-      {loading && <p className="text-center text-blue-600">Loading...</p>}
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
 
-      {error && <p className="text-center text-red-600">{error}</p>}
-
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {users.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function UserCard({ user }) {
-  return (
-    <div className="bg-white rounded shadow p-4 flex flex-col items-center">
-      <img
-        src={user.avatar_url}
-        alt={`${user.login} avatar`}
-        className="w-24 h-24 rounded-full mb-4"
-      />
-      <h2 className="text-lg font-semibold mb-1">{user.login}</h2>
-      <a
-        href={user.html_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 hover:underline"
-      >
-        View Profile
-      </a>
+      {users.length > 0 && (
+        <ul className="mt-6 space-y-6 max-w-3xl mx-auto">
+          {users.map(user => (
+            <li key={user.id} className="flex items-center space-x-4 p-4 border rounded shadow">
+              <img
+                src={user.avatar_url}
+                alt={`${user.login} avatar`}
+                className="w-16 h-16 rounded-full"
+              />
+              <div>
+                <h2 className="text-xl font-semibold">{user.login}</h2>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View Profile
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
