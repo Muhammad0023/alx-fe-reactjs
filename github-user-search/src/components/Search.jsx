@@ -1,65 +1,65 @@
-import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import React, { useState } from 'react';
 
-function Search() {
-  const [username, setUsername] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+function Search({ onSearch }) {
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username.trim()) return;
-
-    setLoading(true);
-    setError(null);
-    setUserData(null);
-
-    try {
-      const data = await fetchUserData(username.trim());
-      setUserData(data);
-    } catch (err) {
-      setError("Looks like we cant find the user");
-    } finally {
-      setLoading(false);
-    }
+    onSearch({
+      username: username.trim(),
+      location: location.trim(),
+      minRepos: minRepos.trim(),
+    });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-4 space-y-4 bg-white rounded shadow-md">
+      <div>
+        <label htmlFor="username" className="block text-sm font-medium text-gray-700">GitHub Username</label>
         <input
+          id="username"
           type="text"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: "0.5rem", width: "300px" }}
+          className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button type="submit" style={{ padding: "0.5rem 1rem", marginLeft: "0.5rem" }}>
-          Search
-        </button>
-      </form>
+      </div>
 
-      {loading && <p>Loading...</p>}
+      <div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
+        <input
+          id="location"
+          type="text"
+          placeholder="Enter location (optional)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div>
+        <label htmlFor="minRepos" className="block text-sm font-medium text-gray-700">Minimum Repositories</label>
+        <input
+          id="minRepos"
+          type="number"
+          min="0"
+          placeholder="Enter minimum repos (optional)"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-      {userData && (
-        <div style={{ marginTop: "1rem" }}>
-          <img
-            src={userData.avatar_url}
-            alt={`${userData.login} avatar`}
-            style={{ width: 100, borderRadius: "50%" }}
-          />
-          <h2>{userData.name || userData.login}</h2>
-          <p>
-            <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-              Visit GitHub Profile
-            </a>
-          </p>
-        </div>
-      )}
-    </div>
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
+      >
+        Search
+      </button>
+    </form>
   );
 }
 
