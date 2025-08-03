@@ -100,6 +100,8 @@ function Search() {
               >
                 View Profile
               </a>
+              <p>Location: {user.location || 'N/A'}</p>
+              <p>Repos: {user.public_repos || 'N/A'}</p>
             </div>
           </div>
         ))}
