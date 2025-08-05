@@ -1,21 +1,21 @@
-// src/components/UserProfile.jsx
 import React from "react";
 
 const UserProfile = () => {
   return (
-    <div className="p-2 sm:p-4 max-w-xl mx-auto bg-white rounded-lg shadow-md">
-      <div className="flex flex-col sm:flex-row items-center sm:items-start">
+    <div className="bg-white rounded-lg shadow-md p-4 sm:p-4 md:p-8 max-w-md mx-auto">
+      <div className="flex flex-col items-center">
         <img
-          src="https://via.placeholder.com/100"
+          src="https://via.placeholder.com/150"
           alt="User Avatar"
-          className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 sm:mb-0 sm:mr-6"
+          className="rounded-full w-24 h-24 md:w-40 md:h-40 mb-4"
         />
-        <div>
-          <h2 className="text-lg sm:text-xl font-semibold">John Doe</h2>
-          <p className="text-sm sm:text-base text-gray-600">
-            Frontend Developer based in Addis Ababa, Ethiopia. Passionate about building accessible and responsive web apps.
-          </p>
-        </div>
+        <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 text-center">
+          Muhammad Ali
+        </h2>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-center">
+          Front-End Developer passionate about building responsive and
+          accessible web applications.
+        </p>
       </div>
     </div>
   );
