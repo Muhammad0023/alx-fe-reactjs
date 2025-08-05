@@ -1,19 +1,24 @@
+// src/components/UserProfile.jsx
 import React from "react";
 
-function UserProfile() {
+const UserProfile = () => {
   return (
-    <div className="user-profile bg-gray-100 p-4 md:p-8 max-w-xs md:max-w-sm mx-auto my-20 rounded-lg shadow-lg">
-      <img
-        src="https://via.placeholder.com/150"
-        alt="User"
-        className="rounded-full w-24 h-24 md:w-36 md:h-36 mx-auto"
-      />
-      <h1 className="text-lg md:text-xl text-blue-800 my-4">Muhammad Ali</h1>
-      <p className="text-gray-600 text-sm md:text-base text-center">
-        A passionate frontend developer who loves working with React and Tailwind CSS.
-      </p>
+    <div className="p-2 sm:p-4 max-w-xl mx-auto bg-white rounded-lg shadow-md">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start">
+        <img
+          src="https://via.placeholder.com/100"
+          alt="User Avatar"
+          className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 sm:mb-0 sm:mr-6"
+        />
+        <div>
+          <h2 className="text-lg sm:text-xl font-semibold">John Doe</h2>
+          <p className="text-sm sm:text-base text-gray-600">
+            Frontend Developer based in Addis Ababa, Ethiopia. Passionate about building accessible and responsive web apps.
+          </p>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default UserProfile;
