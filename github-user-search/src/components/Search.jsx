@@ -1,23 +1,59 @@
-import { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import { useState } from "react";
+import { fetchUserData, searchUsers } from "../services/githubService";
 
-const Search = () => {
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState('');
-  const [minRepos, setMinRepos] = useState('');
-  const [userData, setUserData] = useState(null);
+export default function Search() {
+  const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!username.trim()) return;
-    setLoading(true);
-    setError(null);
+  const handleSingleUser = async (username) => {
     try {
-      const data = await fetchUserData(username, location, minRepos);
-      setUserData(data);
+      const data = await fetchUserData(username);
+      setUsers([data]);
+      setError("");
+      setHasMore(false);
     } catch (err) {
+      setUsers([]);
+      setError("Looks like we cant find the user");
+    }
+  };
+
+  const handleAdvancedSearch = async (e, nextPage = 1) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      if (username && !location && !minRepos) {
+        await handleSingleUser(username);
+      } else {
+        const data = await searchUsers({
+          username,
+          location,
+          minRepos,
+          page: nextPage,
+        });
+
+        if (data.items.length === 0 && nextPage === 1) {
+          setError("Looks like we cant find the user");
+        }
+
+        if (nextPage === 1) {
+          setUsers(data.items);
+        } else {
+          setUsers((prev) => [...prev, ...data.items]);
+        }
+
+        setHasMore(data.items.length > 0);
+        setPage(nextPage);
+      }
+    } catch (err) {
+      setUsers([]);
       setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
@@ -25,86 +61,96 @@ const Search = () => {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+    <div className="max-w-xl mx-auto p-6">
+      {/* Search Form */}
+      <form
+        className="bg-white shadow-lg rounded-lg p-6 space-y-4"
+        onSubmit={handleAdvancedSearch}
+      >
+        <h2 className="text-xl font-bold mb-2">GitHub User Search</h2>
+
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            GitHub Username
-          </label>
+          <label className="block font-medium mb-1">Username</label>
           <input
             type="text"
-            id="username"
+            placeholder="octocat"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter GitHub username"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full border p-2 rounded"
           />
         </div>
+
         <div>
-          <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-            Location
-          </label>
+          <label className="block font-medium mb-1">Location</label>
           <input
             type="text"
-            id="location"
+            placeholder="San Francisco"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter location"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full border p-2 rounded"
           />
         </div>
+
         <div>
-          <label htmlFor="minRepos" className="block text-sm font-medium text-gray-700">
-            Minimum Repositories
-          </label>
+          <label className="block font-medium mb-1">Minimum Repositories</label>
           <input
             type="number"
-            id="minRepos"
+            min="0"
+            placeholder="10"
             value={minRepos}
             onChange={(e) => setMinRepos(e.target.value)}
-            placeholder="Enter minimum repositories"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full border p-2 rounded"
           />
         </div>
+
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Search
         </button>
       </form>
-      {loading && <p className="mt-4 text-center">Loading...</p>}
-      {error && <p className="mt-4 text-center text-red-500">Looks like we cant find the user</p>}
-      {userData && (
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {userData.map((user) => (
-            <div key={user.id} className="bg-white p-4 rounded-lg shadow-md">
-              <img
-                src={user.avatar_url}
-                alt={`${user.login}'s avatar`}
-                className="w-20 h-20 rounded-full mx-auto mb-2"
-              />
-              <h3 className="text-lg font-semibold text-center">{user.login}</h3>
-              {user.location && (
-                <p className="text-gray-600 text-center">Location: {user.location}</p>
-              )}
-              <p className="text-gray-600 text-center">Repos: {user.public_repos || 'N/A'}</p>
-              <div className="mt-2 text-center">
-                <a
-                  href={user.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800"
-                >
-                  View Profile
-                </a>
-              </div>
+
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
+      <div className="mt-6 space-y-4">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="flex items-center bg-white shadow p-4 rounded-lg"
+          >
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-16 h-16 rounded-full mr-4"
+            />
+            <div>
+              <h3 className="font-semibold text-lg">{user.login}</h3>
+              <p className="text-gray-700">{user.location || "No location"}</p>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                View Profile
+              </a>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+
+      {hasMore && !loading && (
+        <div className="text-center mt-4">
+          <button
+            onClick={(e) => handleAdvancedSearch(e, page + 1)}
+            className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900"
+          >
+            Load More
+          </button>
         </div>
       )}
     </div>
   );
-};
-
-export default Search;
+}
