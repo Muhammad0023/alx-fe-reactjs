@@ -1,25 +1,24 @@
-import React from "react";
-import UserContext from "./UserContext";
-import UserProfile from "./components/UserProfile";
 import Header from "./components/Header";
+import WelcomeMessage from "./components/WelcomeMessage";
 import MainContent from "./components/MainContent";
 import Footer from "./components/Footer";
-import WelcomeMessage from "./components/WelcomeMessage";
+import UserProfile from "./components/UserProfile";
+import ProfilePage from "./components/ProfilePage";
+import UserContext from "./components/UserContext";
 
 function App() {
-  // This is the user data we'll provide via context
-  const userData = { name: "Alice", email: "alice@example.com" };
-
+  const userData = { name: "Jane Doe", email: "jane.doe@example.com" };
   return (
-    <UserContext.Provider value={userData}>
-      <div>
-        <Header />
-        <MainContent />
-        <WelcomeMessage />
-        <UserProfile />
-        <Footer />
-      </div>
-    </UserContext.Provider>
+    <>
+      <WelcomeMessage />
+      <Header />
+      <MainContent />
+      <Footer />
+      <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
+      <UserContext.Provider value={userData}>
+        <ProfilePage />
+      </UserContext.Provider>
+    </>
   );
 }
 
