@@ -1,5 +1,5 @@
 import { Routes, Route, NavLink } from "react-router-dom";
-import Home from "./pages/Home";
+import HomePage from "./components/HomePage";
 import AddRecipe from "./pages/AddRecipe";
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
 
       {/* Routes */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/add" element={<AddRecipe />} />
       </Routes>
     </div>
