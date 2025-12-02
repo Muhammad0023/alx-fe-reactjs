@@ -1,33 +1,16 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
-import HomePage from "./components/HomePage";
-import AddRecipe from "./pages/AddRecipe";
-import RecipeDetail from "./components/RecipeDetail";
+// ... other imports
+
+import AddRecipeForm from './components/AddRecipeForm'; // <-- NEW IMPORT
 
 function App() {
   return (
     <Router>
-      <div className="p-4">
-        {/* Navigation */}
-        <nav className="mb-6 flex gap-4">
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "text-blue-600 font-bold" : "text-gray-700")}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/add"
-            className={({ isActive }) => (isActive ? "text-blue-600 font-bold" : "text-gray-700")}
-          >
-            Add Recipe
-          </NavLink>
-        </nav>
-
-        {/* Routes */}
+      <div className="min-h-screen bg-gray-50">
+        {/* You could add a simple navigation bar here */}
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/add" element={<AddRecipe />} />
           <Route path="/recipe/:id" element={<RecipeDetail />} />
+          <Route path="/add" element={<AddRecipeForm />} /> {/* <-- NEW ROUTE */}
         </Routes>
       </div>
     </Router>

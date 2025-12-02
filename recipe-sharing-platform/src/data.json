@@ -2,17 +2,64 @@
   {
     "id": 1,
     "title": "Spaghetti Carbonara",
-    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
-    "image": "https://via.placeholder.com/600x400",
-    "ingredients": ["200g spaghetti", "100g pancetta", "2 eggs", "50g Parmesan cheese", "Black pepper"],
-    "instructions": ["Cook pasta", "Fry pancetta", "Mix eggs and cheese", "Combine all ingredients"]
+    "summary": "A classic Italian pasta dish with eggs, Pecorino cheese, pancetta, and black pepper. Simple, rich, and delicious.",
+    "ingredients": [
+      "200g spaghetti",
+      "100g pancetta or guanciale",
+      "2 large eggs",
+      "50g Pecorino Romano cheese, grated",
+      "Black pepper, freshly ground"
+    ],
+    "instructions": [
+      "Cook the spaghetti according to package directions.",
+      "While pasta cooks, crisp the pancetta in a pan.",
+      "In a bowl, whisk eggs, cheese, and a generous amount of black pepper.",
+      "Drain the pasta, reserving some water. Toss the hot pasta with the egg mixture and pancetta off the heat. Use pasta water to create a creamy sauce.",
+      "Serve immediately, topped with more cheese and pepper."
+    ],
+    "image": "https://via.placeholder.com/300x200?text=Spaghetti+Carbonara"
   },
   {
     "id": 2,
     "title": "Chicken Tikka Masala",
-    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
-    "image": "https://via.placeholder.com/600x400",
-    "ingredients": ["500g chicken", "200ml yogurt", "2 tbsp tikka masala", "1 onion", "2 tomatoes"],
-    "instructions": ["Marinate chicken", "Grill chicken", "Cook onion and tomato", "Add chicken to sauce"]
+    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth, buttery, and creamy tomato-based gravy. A universally loved Indian dish.",
+    "ingredients": [
+      "500g chicken breast, cubed",
+      "1 cup plain yogurt",
+      "2 tbsp ginger-garlic paste",
+      "1 tbsp tikka masala spice blend",
+      "1 can (400g) crushed tomatoes",
+      "1/2 cup heavy cream"
+    ],
+    "instructions": [
+      "Marinate the chicken in yogurt, half the ginger-garlic paste, and spices for at least 30 minutes.",
+      "Grill or bake the chicken pieces until cooked through.",
+      "Sauté remaining ginger-garlic paste, then add crushed tomatoes and simmer.",
+      "Stir in the grilled chicken and cream. Cook for 5-10 minutes.",
+      "Garnish with cilantro and serve with rice or naan."
+    ],
+    "image": "https://via.placeholder.com/300x200?text=Chicken+Tikka+Masala"
+  },
+  {
+    "id": 3,
+    "title": "Vegetarian Chili",
+    "summary": "A hearty and flavorful meatless chili packed with beans, corn, and a blend of spices. Perfect for a cold evening.",
+    "ingredients": [
+      "1 onion, chopped",
+      "1 red bell pepper, chopped",
+      "1 can (15 oz) kidney beans, rinsed",
+      "1 can (15 oz) black beans, rinsed",
+      "1 cup frozen corn",
+      "28 oz crushed tomatoes",
+      "2 tbsp chili powder"
+    ],
+    "instructions": [
+      "Sauté onion and bell pepper until soft.",
+      "Stir in chili powder and cook for 1 minute.",
+      "Add crushed tomatoes, kidney beans, black beans, and corn.",
+      "Bring to a boil, then reduce heat and simmer for at least 20 minutes.",
+      "Season with salt and pepper. Serve with your favorite toppings."
+    ],
+    "image": "https://via.placeholder.com/300x200?text=Vegetarian+Chili"
   }
 ]
