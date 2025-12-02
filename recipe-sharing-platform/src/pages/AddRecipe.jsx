@@ -1,9 +1,7 @@
+import AddRecipeForm from "../components/AddRecipeForm";
+
 function AddRecipe() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold">Add a New Recipe</h1>
-    </div>
-  );
+  return <AddRecipeForm />;
 }
 
 export default AddRecipe;

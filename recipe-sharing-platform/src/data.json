@@ -3,66 +3,16 @@
     "id": 1,
     "title": "Spaghetti Carbonara",
     "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
-    "image": "https://via.placeholder.com/400x300",
-    "ingredients": [
-      "200g spaghetti",
-      "100g pancetta or bacon",
-      "2 large eggs",
-      "50g grated Parmesan cheese",
-      "2 cloves garlic",
-      "Salt and black pepper to taste"
-    ],
-    "instructions": [
-      "Boil the spaghetti in salted water until al dente.",
-      "Fry the pancetta with garlic until crispy.",
-      "Beat eggs and mix with grated Parmesan cheese.",
-      "Drain pasta and combine immediately with egg and cheese mixture.",
-      "Add pancetta and garlic, mix well, season with pepper, and serve hot."
-    ]
+    "image": "https://via.placeholder.com/600x400",
+    "ingredients": ["200g spaghetti", "100g pancetta", "2 eggs", "50g Parmesan cheese", "Black pepper"],
+    "instructions": ["Cook pasta", "Fry pancetta", "Mix eggs and cheese", "Combine all ingredients"]
   },
   {
     "id": 2,
     "title": "Chicken Tikka Masala",
-    "summary": "Chunks of grilled chicken cooked in a smooth buttery & creamy tomato-based gravy.",
-    "image": "https://via.placeholder.com/400x300",
-    "ingredients": [
-      "500g chicken breast, cut into cubes",
-      "1 cup plain yogurt",
-      "2 tbsp garam masala",
-      "1 tbsp turmeric",
-      "1 onion, chopped",
-      "2 cloves garlic, minced",
-      "1 cup tomato puree",
-      "1/2 cup cream",
-      "Salt and pepper to taste"
-    ],
-    "instructions": [
-      "Marinate chicken in yogurt, garam masala, turmeric, salt, and pepper for at least 1 hour.",
-      "Grill or pan-fry the chicken until cooked through.",
-      "In a pan, sauté onions and garlic until golden.",
-      "Add tomato puree and simmer for 10 minutes.",
-      "Stir in cream, add cooked chicken, simmer 5 minutes, and serve hot."
-    ]
-  },
-  {
-    "id": 3,
-    "title": "Vegetable Stir Fry",
-    "summary": "Quick and healthy stir-fried vegetables with soy sauce and garlic.",
-    "image": "https://via.placeholder.com/400x300",
-    "ingredients": [
-      "1 cup broccoli florets",
-      "1 cup sliced bell peppers",
-      "1 carrot, sliced",
-      "2 cloves garlic, minced",
-      "2 tbsp soy sauce",
-      "1 tbsp olive oil"
-    ],
-    "instructions": [
-      "Heat olive oil in a wok or large pan.",
-      "Add garlic and sauté until fragrant.",
-      "Add vegetables and stir-fry for 5-7 minutes.",
-      "Add soy sauce and toss to coat evenly.",
-      "Serve hot as a side or with rice/noodles."
-    ]
+    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
+    "image": "https://via.placeholder.com/600x400",
+    "ingredients": ["500g chicken", "200ml yogurt", "2 tbsp tikka masala", "1 onion", "2 tomatoes"],
+    "instructions": ["Marinate chicken", "Grill chicken", "Cook onion and tomato", "Add chicken to sauce"]
   }
 ]

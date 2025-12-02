@@ -7,8 +7,8 @@ function RecipeDetail() {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    const found = recipesData.find((r) => r.id === parseInt(id));
-    setRecipe(found);
+    const foundRecipe = recipesData.find((r) => r.id === parseInt(id));
+    setRecipe(foundRecipe);
   }, [id]);
 
   if (!recipe) {
@@ -34,7 +34,6 @@ function RecipeDetail() {
           className="w-full h-64 object-cover rounded-lg mb-4"
         />
         <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
-
         <h2 className="text-xl font-semibold mb-2">Summary</h2>
         <p className="text-gray-700 mb-4">{recipe.summary}</p>
 
