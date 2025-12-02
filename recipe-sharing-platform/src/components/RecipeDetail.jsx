@@ -11,7 +11,6 @@ const RecipeDetail = () => {
 
   useEffect(() => {
     setLoading(true);
-    // Convert the URL parameter (which is a string) to a number
     const recipeId = parseInt(id); 
 
     // Find the recipe in the mock data array
@@ -24,11 +23,11 @@ const RecipeDetail = () => {
       setError(`Recipe with ID ${id} not found.`);
       setLoading(false);
     }
-  }, [id]); // Re-run effect if the ID changes
+  }, [id]);
 
   if (loading) return <div className="text-center mt-8 text-xl">Loading recipe details...</div>;
   if (error) return <div className="text-center mt-8 text-red-500 text-xl">{error}</div>;
-  if (!recipe) return null; // Should be handled by error, but good practice
+  if (!recipe) return null;
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-10">
@@ -72,7 +71,7 @@ const RecipeDetail = () => {
               {recipe.ingredients.map((item, index) => (
                 <li key={index} className="flex items-start text-lg text-gray-700">
                   <span className="text-indigo-500 mr-3 mt-1">
-                    {/* Simple checkmark icon */}
+                    {/* Checkmark Icon */}
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                   </span>
                   {item}

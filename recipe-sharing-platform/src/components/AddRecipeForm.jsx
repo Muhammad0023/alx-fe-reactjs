@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AddRecipeForm = () => {
-  // Hook to redirect after submission
   const navigate = useNavigate();
   
-  // State to hold form data
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -14,55 +12,43 @@ const AddRecipeForm = () => {
     image: '',
   });
   
-  // State for form validation errors
   const [errors, setErrors] = useState({});
-  // State for successful submission message
   const [submissionMessage, setSubmissionMessage] = useState('');
 
-  // Universal handler for all input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear validation error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
     }
   };
 
-  // Basic client-side validation logic
   const validateForm = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = 'Recipe title is required.';
     if (!formData.summary.trim()) newErrors.summary = 'A summary is required.';
-    // Check if ingredients has at least two lines (a simple validation example)
+    // Validation: at least two ingredients (lines)
     if (formData.ingredients.split('\n').filter(line => line.trim() !== '').length < 2) {
       newErrors.ingredients = 'Please list at least two ingredients, one per line.';
     }
     if (!formData.instructions.trim()) newErrors.instructions = 'Preparation steps are required.';
-    // A placeholder image URL is fine for this mock setup
     if (!formData.image.trim()) newErrors.image = 'An image URL is recommended.'; 
     
     setErrors(newErrors);
-    // Form is valid if the errors object is empty
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submission handler
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmissionMessage(''); // Clear previous messages
+    setSubmissionMessage('');
     
     if (validateForm()) {
-      // In a real application, you would send this data to an API endpoint
-      // console.log('Form Data Ready for Submission:', formData);
+      // SUCCESS logic
+      // In a real app: AXIOS/FETCH POST call here
+      // console.log('Form Data Ready for Submission:', formData); 
       
-      // Simulate successful submission
       setSubmissionMessage('Recipe submitted successfully! Redirecting to home...');
       
-      // Clear form (optional)
-      // setFormData({ title: '', summary: '', ingredients: '', instructions: '', image: '' });
-
-      // After a short delay, redirect the user to the home page
       setTimeout(() => {
         navigate('/');
       }, 2000);
@@ -72,7 +58,6 @@ const AddRecipeForm = () => {
     }
   };
 
-  // Helper function to render an input field block
   const renderInputBlock = (name, label, type = 'text', placeholder) => (
     <div className="mb-4">
       <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
@@ -86,7 +71,6 @@ const AddRecipeForm = () => {
           value={formData[name]}
           onChange={handleChange}
           placeholder={placeholder}
-          // Tailwind class for input styling
           className={`mt-1 block w-full rounded-md border p-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
             errors[name] ? 'border-red-500' : 'border-gray-300'
           }`}
@@ -99,7 +83,6 @@ const AddRecipeForm = () => {
           value={formData[name]}
           onChange={handleChange}
           placeholder={placeholder}
-          // Tailwind class for input styling
           className={`mt-1 block w-full rounded-md border p-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
             errors[name] ? 'border-red-500' : 'border-gray-300'
           }`}
@@ -135,22 +118,24 @@ const AddRecipeForm = () => {
       {/* Recipe Form */}
       <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-xl shadow-2xl">
         
-        {/* Title and Summary (Responsive Grid on desktop) */}
+        {/* Title and Summary (Responsive Grid) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {renderInputBlock('title', 'Recipe Title')}
           {renderInputBlock('summary', 'Short Summary/Description')}
         </div>
 
-        {/* Image URL (Full Width) */}
-        {renderInputBlock('image', 'Image URL (e.g., https://via.placeholder.com/400x300)', 'text', 'https://example.com/image.jpg')}
+        {/* Image URL */}
+        {renderInputBlock('image', 'Image URL', 'text', 'https://example.com/image.jpg')}
 
-        {/* Ingredients and Instructions (Full Width Textareas) */}
+        {/* Ingredients */}
         {renderInputBlock(
           'ingredients', 
           'Ingredients (List each ingredient on a new line)', 
           'textarea',
           '2 cups flour\n1 cup sugar\n...'
         )}
+        
+        {/* Instructions */}
         {renderInputBlock(
           'instructions', 
           'Preparation Steps (Write out all steps)', 
