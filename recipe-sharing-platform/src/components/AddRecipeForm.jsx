@@ -1,166 +1,149 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
-const AddRecipeForm = () => {
-  const navigate = useNavigate();
-  
+function AddRecipeForm({ onAddRecipe }) {
   const [formData, setFormData] = useState({
-    title: '',
-    summary: '',
-    ingredients: '',
-    instructions: '',
-    image: '',
+    title: "",
+    description: "",
+    ingredients: "",
+    steps: "",
+    imageUrl: "",
   });
-  
+
   const [errors, setErrors] = useState({});
-  const [submissionMessage, setSubmissionMessage] = useState('');
 
+  // Handle input change
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: null }));
-    }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value, // <-- your project requirement
+    });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = 'Recipe title is required.';
-    if (!formData.summary.trim()) newErrors.summary = 'A summary is required.';
-    // Validation: at least two ingredients (lines)
-    if (formData.ingredients.split('\n').filter(line => line.trim() !== '').length < 2) {
-      newErrors.ingredients = 'Please list at least two ingredients, one per line.';
-    }
-    if (!formData.instructions.trim()) newErrors.instructions = 'Preparation steps are required.';
-    if (!formData.image.trim()) newErrors.image = 'An image URL is recommended.'; 
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  // Validate form
+  const validate = () => {
+    let newErrors = {};
+
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!formData.ingredients.trim()) newErrors.ingredients = "Ingredients required";
+    if (!formData.steps.trim()) newErrors.steps = "Steps required";
+
+    return newErrors;
   };
 
+  // Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmissionMessage('');
-    
-    if (validateForm()) {
-      // SUCCESS logic
-      // In a real app: AXIOS/FETCH POST call here
-      // console.log('Form Data Ready for Submission:', formData); 
-      
-      setSubmissionMessage('Recipe submitted successfully! Redirecting to home...');
-      
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
-      
-    } else {
-      setSubmissionMessage('Please correct the highlighted errors before submitting.');
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+
+    onAddRecipe(formData);
+
+    // Reset after submit
+    setFormData({
+      title: "",
+      description: "",
+      ingredients: "",
+      steps: "",
+      imageUrl: "",
+    });
+
+    setErrors({});
   };
 
-  const renderInputBlock = (name, label, type = 'text', placeholder) => (
-    <div className="mb-4">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-        {label}
-      </label>
-      {type === 'textarea' ? (
-        <textarea
-          id={name}
-          name={name}
-          rows={type === 'textarea' ? 4 : undefined}
-          value={formData[name]}
-          onChange={handleChange}
-          placeholder={placeholder}
-          className={`mt-1 block w-full rounded-md border p-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-            errors[name] ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-      ) : (
-        <input
-          type={type}
-          id={name}
-          name={name}
-          value={formData[name]}
-          onChange={handleChange}
-          placeholder={placeholder}
-          className={`mt-1 block w-full rounded-md border p-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
-            errors[name] ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-      )}
-      {/* Validation Error Message */}
-      {errors[name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[name]}</p>
-      )}
-    </div>
-  );
-
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-10">
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-6 border-b-2 pb-2">
-        ➕ Submit a New Recipe
-      </h1>
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto bg-white shadow-md p-6 rounded-xl space-y-4"
+    >
+      <h2 className="text-2xl font-bold text-center">Add a New Recipe</h2>
 
-      {/* Submission Status Message */}
-      {submissionMessage && (
-        <div 
-          className={`p-4 mb-6 rounded-lg font-medium ${
-            submissionMessage.includes('successfully') 
-            ? 'bg-green-100 text-green-700' 
-            : 'bg-red-100 text-red-700'
-          }`}
-          role="alert"
-        >
-          {submissionMessage}
-        </div>
-      )}
-
-      {/* Recipe Form */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-xl shadow-2xl">
-        
-        {/* Title and Summary (Responsive Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {renderInputBlock('title', 'Recipe Title')}
-          {renderInputBlock('summary', 'Short Summary/Description')}
-        </div>
-
-        {/* Image URL */}
-        {renderInputBlock('image', 'Image URL', 'text', 'https://example.com/image.jpg')}
-
-        {/* Ingredients */}
-        {renderInputBlock(
-          'ingredients', 
-          'Ingredients (List each ingredient on a new line)', 
-          'textarea',
-          '2 cups flour\n1 cup sugar\n...'
+      {/* Title */}
+      <div>
+        <label className="block font-medium mb-1">Title</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          className="w-full border rounded-md p-2"
+          placeholder="Recipe title"
+        />
+        {errors.title && (
+          <p className="text-red-500 text-sm mt-1">{errors.title}</p>
         )}
-        
-        {/* Instructions */}
-        {renderInputBlock(
-          'instructions', 
-          'Preparation Steps (Write out all steps)', 
-          'textarea',
-          '1. Mix all dry ingredients...\n2. Add wet ingredients...\n3. Bake for 30 minutes...'
-        )}
+      </div>
 
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-end space-x-4">
-          <Link 
-            to="/" 
-            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-semibold shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
-          >
-            Submit Recipe
-          </button>
-        </div>
-      </form>
-    </div>
+      {/* Description */}
+      <div>
+        <label className="block font-medium mb-1">Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full border rounded-md p-2"
+          placeholder="Short description"
+        ></textarea>
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+        )}
+      </div>
+
+      {/* Ingredients */}
+      <div>
+        <label className="block font-medium mb-1">Ingredients</label>
+        <textarea
+          name="ingredients"
+          value={formData.ingredients}
+          onChange={handleChange}
+          className="w-full border rounded-md p-2"
+          placeholder="List ingredients"
+        ></textarea>
+        {errors.ingredients && (
+          <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>
+        )}
+      </div>
+
+      {/* Steps */}
+      <div>
+        <label className="block font-medium mb-1">Steps</label>
+        <textarea
+          name="steps"
+          value={formData.steps}
+          onChange={handleChange}
+          className="w-full border rounded-md p-2"
+          placeholder="Describe how to cook it"
+        ></textarea>
+        {errors.steps && (
+          <p className="text-red-500 text-sm mt-1">{errors.steps}</p>
+        )}
+      </div>
+
+      {/* Image URL */}
+      <div>
+        <label className="block font-medium mb-1">Image URL (optional)</label>
+        <input
+          type="text"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          className="w-full border rounded-md p-2"
+          placeholder="https://example.com/photo.jpg"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md transition"
+      >
+        Add Recipe
+      </button>
+    </form>
   );
-};
+}
 
 export default AddRecipeForm;
